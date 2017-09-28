@@ -1,0 +1,94 @@
+﻿@model RecipesWEB.Models.News
+
+@{
+    ViewBag.Title = "Create";
+    var date = DateTime.UtcNow;
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+<div class="row">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="card">
+            <form method="post" id="editNews" class="form-horizontal" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <fieldset class="createBackgroundColor">
+                    <h3 class="text-center">Нова вест</h3>
+                    <hr />
+                    <div class="form-group">
+                        <label for="newsTitle" class="col-md-2 control-label">Наслов</label>
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.newsTitle, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.newsTitle, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newsBody" class="col-md-2 control-label">Вест</label>
+                        <div class="col-md-9">
+                            @Html.TextAreaFor(m => m.newsBody, new { rows = 15, @class = "form-control", @style = "resize: none;white-space: pre-wrap;" })
+                            @Html.ValidationMessageFor(model => model.newsBody, "", new { @class = "text-danger" })
+                        </div>
+                        <input type="hidden" name="CreatedDate" value="@date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="ImageNews" class="col-md-2 control-label">Стара слика</label>
+                        <div class="col-md-3">
+                            <img src="~/Content/images/newsImages/@Model.imagePath" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ImageNews" class="col-md-2 control-label">Нова слика</label>
+                        <div class="col-md-9">
+                            <input type="file" name="ImageNews" id="file" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="Id" value="@Model.Id" />
+                    </div>
+                    <div class="form-group">
+                        <div class="text-center">
+
+                            <input type="submit" id="btnCreatePost" value="промени" class="btn btn-success" />
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="container">
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Test Modal</button>
+    <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalBody">Modal Header</h3>
+                </div>
+                <div class="modal-body" id="modalButtons">
+                    <div class="btn-group btn-group-justified">
+                        <a class="btn btn-sm btn-primary" href="/News/Details?id=@Model.Id">Назад кон советот</a>
+                        <a class="btn btn-sm btn-primary" href="/News/Index">Листа на совети</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/custom/editNews.js"></script>

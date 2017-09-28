@@ -1,0 +1,156 @@
+﻿@model RecipesWEB.Models.viewModels.approveViewModel
+@using PagedList.Mvc;
+@{
+    ViewBag.activeType = TempData["activeType"];
+}
+
+
+
+<br />
+<div class="row">
+    <a class="btn btn-amber btn-sm" href="/Account/RegisterAdmin">креирање корисник</a>
+    <a class="btn btn-amber btn-sm" href="/Posts/Create">креирање рецепт</a>
+    <a class="btn btn-amber btn-sm" href="/News/Create">креирање совет</a>
+</div>
+<br />
+
+@if (Model.Posts.Count() != 0 || Model.reportedComments.Count() != 0)
+{
+
+    <ul class="nav nav-tabs col-md-12">
+        <li id="menu1_li" class="ulSliderBackgroundColor"><a data-toggle="tab" href="#menu1">Рецепти</a></li>
+        <li id="menu2_li" class="ulSliderBackgroundColor"><a data-toggle="tab" href="#menu2">Коментари</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="menu1" class="tab-pane fade">
+            <br />
+            @if (Model.Posts.Count() != 0)
+            {
+            <div class="row">
+                <div class="regular slider flex-row row">
+                    @foreach (var item in Model.Posts)
+                    {
+                        <div class="col-md-3">
+                            <div class="card cardtest hoverable adminBackgroundColor" style="padding:10px;margin-bottom:10px;">
+                                <div class="card-block ">
+                                    <div class="btn-group btn-group-justified">
+                                        <a class="btn btn-sm btnApproveColor" href="/Posts/approveChange/?id=@item.Id&tip=post">Одобри</a>
+                                        <a class="btn btn-sm btnRemoveColor" href="/Posts/Delete/@item.Id">Избриши</a>
+                                    </div>
+                                </div>
+                                <div class="card-block ">
+                                    <div class="btn-group btn-group-justified">
+                                        <a class="btn btn-sm btnDefaultColor" href="/Posts/Edit?id=@item.Id">Едитирај</a>
+                                        <a class="btn btn-sm btnDefaultColor" href="/Posts/Details?id=@item.Id">Детали</a>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="card-block">
+                                    <h5 class="text-center"><strong><span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>@item.UserName</strong></h5>
+                                    <h5 class="text-center"><strong>@item.postCategory</strong></h5>
+                                    <h5 class="text-center"><strong>@item.approveState</strong></h5>
+                                </div>
+                                <div class="card-block">
+                                    <h4 class="text-center">@item.postTitle</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                @if (ViewBag.showPostPage == "yes")
+                {
+                    <div class="row text-center">
+                        @Html.PagedListPager(Model.Posts, page => Url.Action("approveIndex", new { pagePosts = page, pageComments = ViewBag.pageComments }))
+                    </div>
+                }
+            </div>
+            }
+            else
+            {
+                <div class="row" style="margin-top:30px;margin-bottom:250px">
+                    <h4>Моментално нема рецепти за одобрување.</h4>
+                </div>
+            
+            }
+        </div>
+        <div id="menu2" class="tab-pane fade">
+            <br />
+            @if (Model.reportedComments.Count() != 0)
+            {
+                <div class="row">
+                    <div class="regular slider flex-row row">
+                        @foreach (var item in Model.reportedComments)
+                    {
+                            <div class="col-md-3">
+                                <div class="card cardtest hoverable adminBackgroundColor" style="padding:10px;margin-bottom:10px;">
+                                    <div class="card-block ">
+                                        <div class="btn-group btn-group-justified">
+                                            <a class="btn btn-sm btnApproveColor" href="/Posts/approveComment/@item.Item1.Id">Одобри</a>
+                                            <a class="btn btn-sm btnRemoveColor" href="/Posts/approveChange/?id=@item.Item1.Id&tip=comment">Избриши</a>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="card-block">
+                                        <h5 class="text-center"><strong>Причина: @item.Item2</strong></h5>
+                                        <h5 class="text-center"><strong>Број на пријави: @item.Item3</strong></h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <h4 class="text-center">@item.Item1.CommentBody</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        }
+                    </div>
+                    
+                    @if (ViewBag.showCommentsPage == "yes")
+                    {
+                        <div class="row text-center">
+                            @Html.PagedListPager(Model.reportedComments, page => Url.Action("approveIndex", new { pageComments = page, pagePosts = ViewBag.pagePosts }))
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <h4>Моментално нема пријавени коментари.</h4>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="row" style="margin-top:30px;margin-bottom:250px">
+        <h4><strong>Моментално нема рецепти за одобрување или пријавени коментари.</strong></h4>
+    </div>
+}
+
+
+@section Scripts{
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            debugger;
+            var activeType = '@(ViewBag.activeType)';
+
+            if (activeType == "comment") {
+                $("#menu2_li").addClass("active");
+                $("#menu2").addClass("in active");
+            }
+            else {
+                $("#menu1_li").addClass("active");
+                $("#menu1").addClass("in active");
+            }
+
+        });
+    </script>
+}
+

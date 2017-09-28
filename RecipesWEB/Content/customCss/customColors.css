@@ -1,0 +1,72 @@
+﻿
+
+.homeBackgroundColor {
+    background:rgba(186, 206, 16, 0.20);
+}
+
+.detailsBackgroundColor {
+        background: rgba(59, 160, 111, 0.35);
+}
+
+.ulSliderBackgroundColor {
+    background:rgba(92, 163, 86, 0.59);
+}
+
+.cardTextBackgroundColor {
+    background:rgba(48, 109, 19, 0.80);
+
+}
+
+
+.btnSliderColor {
+    background:#50713a;
+}
+.btnApproveColor {
+    background:#6ab542;
+}
+.btnRemoveColor {
+    background:#d84545;
+}
+.btnDefaultColor {
+    background:#317564;
+}
+
+.adminBackgroundColor {
+    background:rgba(186, 206, 16, 0.20);
+}
+
+.createBackgroundColor {
+    background: rgba(255, 255, 255, 0.81);
+}
+
+.favorite {
+    background: rgb(215, 232, 6);
+}
+
+.notFavorite{
+background: rgb(118, 183, 9);
+}
+
+.unreadNotificationBackgroundColor {
+    background:rgba(123, 134, 33, 0.84);
+}
+
+
+.textWhiteColor{
+    color:rgba(255, 255, 255, 0.81);
+}
+
+
+.titleLineBackground{
+    background:#000000
+}
+
+
+.sideListBackgroundColor {
+    background:rgba(27, 186, 69, 0.77);
+}
+
+
+.btnBledo {
+     background:rgba(196, 233, 206, 0.48);
+}

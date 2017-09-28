@@ -1,0 +1,242 @@
+﻿@model PagedList.IPagedList<RecipesWEB.Models.Posts>
+@using PagedList.Mvc;
+
+
+@{
+    if (ViewBag.Category == null)
+    {
+        ViewBag.Category = "сите";
+    }
+}
+
+<style>
+    .catNav {
+        font: bold 15px/25px Helvetica, Sans-Serif;
+    }
+</style>
+
+<br />
+
+<div class="row">
+    <br />
+    <div class="row">
+        <div class="col-md-8">
+            <div class="col-md-12" style="padding-top:5px;">
+
+                <div class="checkbox-inline">
+                    <input type="checkbox" class="categoryCheck" id="сите">
+                    <p class="catNav">Сите рецепти</p>
+                </div>
+                <div class="checkbox-inline">
+                    <input type="checkbox" class="categoryCheck" id="Појадок">
+                    <p class="catNav">Појадок</p>
+                </div>
+                <div class="checkbox-inline">
+                    <input type="checkbox" class="categoryCheck" id="Ручек">
+                    <p class="catNav">Ручек</p>
+                </div>
+                <div class="checkbox-inline">
+                    <input type="checkbox" class="categoryCheck" id="Вечера" />
+                    <p class="catNav">Вечера</p>
+                </div>
+                <div class="checkbox-inline">
+                    <input type="checkbox" class="categoryCheck" id="Десерт">
+                    <p class="catNav">Десерт</p>
+                </div>
+            </div>
+            <div class="col-md-12" style="padding-bottom:5px">
+                <div class="radio-inline">
+                    <input type="radio" class="categorySort" name="optradio" id="date">
+                    <p class="catNav">Сортирање по датум</p>
+                </div>
+                <div class="radio-inline">
+                    <input type="radio" class="categorySort" name="optradio" id="rating">
+                    <p class="catNav">Сортирање по рејтинг</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-4" style="padding-right:30px;padding-top:5px">
+            <a class="btn btn-block" href="/Posts/Create" style="background:#b6bd19">Нов рецепт</a>
+        </div>
+
+
+
+    </div>
+
+    <br />
+</div>
+<br />
+
+<div class="row">
+
+    <div class="flex-row row">
+        @foreach (var item in Model)
+            {
+            <div class="col-md-4" style="margin-bottom:10px;margin-top:5px; padding-left:10px;padding-right:10px;cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                <div class="card cardtest hoverable">
+                        <img src="~/Content/images/postImages/@item.imagePath" alt="слика на рецептот" class="img-responsive" />
+                    <div class="overTextPostsTop">
+                        <div style="padding:10px;padding-top:0">
+                            <div class="spanClassPostsTop" style="padding:10px">
+                                <div class="spacer text-center">@item.postTitle</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overTextPostsBottom">
+                        <div style="padding:10px;padding-bottom:0">
+                            <div class="spanClassPostsBottom">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="spacer"><span class="glyphicon glyphicon-user"></span> @item.UserName <br /></div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="spacer"><span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating<br /></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="spacer">@item.postCategory<br /></div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="spacer"><span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count() <br /></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <hr />
+    <div class="row text-center">
+
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortType = ViewBag.Sort, cat = ViewBag.Category }))
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+        function myhref(web) {
+            window.location.href = web;
+        }
+    </script>
+    <script type="text/javascript">
+
+
+        function SetUnit(unit) {
+            var href = $('.cssbuttongo').attr('href');
+            href = href.replace(unit, "{0}");
+            var hreftmp = "/Posts/Index?sortType=" + unit;
+
+            window.location.href = hreftmp;
+        }
+
+        var sortView = '@(ViewBag.Sort)';
+        if (sortView) {
+            $('#' + sortView).prop('checked', true);
+        }
+
+        debugger;
+
+        var categoryArray = [];
+        var categoryViewbag = '@(ViewBag.Category)';
+        if (categoryViewbag != null && categoryViewbag != "сите") {
+            var categorySplit = categoryViewbag.split("|");
+            var arrayLength = categorySplit.length;
+
+            for (i = 0; i < arrayLength; i++) {
+                categoryArray.push(categorySplit[i]);
+                $('#' + categorySplit[i]).prop('checked', true);
+            }
+
+        }
+        else {
+            $('#сите').prop('checked', true);
+
+        }
+
+        $('.categoryCheck').change(function () {
+
+            var checkBox = $(this).attr('id');
+
+            debugger;
+            //var isChecked = $('#' + checkBox).is(":checked")
+
+            if (this.checked) {
+                if (checkBox == "сите") {
+                    categoryArray.length = 0;
+
+                    $('#Предјадења').prop('checked', false);
+                    $('#Главни јадења').prop('checked', false);
+                    $('#Десерти').prop('checked', false);
+                    $('#Додатоци').prop('checked', false);
+
+                    if (sortView) {
+                        var hreftmp = "/Posts/Index?sortType=" + sortView + "&cat=" + checkBox;
+                        window.location.href = hreftmp;
+                    }
+                    else {
+                        var hreftmp = "/Posts/Index?cat=" + checkBox;
+                        window.location.href = hreftmp;
+                    }
+                }
+                else {
+                    $('#сите').prop('checked', false);
+                    categoryArray.push(checkBox);
+                    var categoriesJoin = categoryArray.join("|");
+
+                    if (sortView) {
+                        var hreftmp = "/Posts/Index?sortType=" + sortView + "&cat=" + categoriesJoin;
+                        window.location.href = hreftmp;
+                    }
+                    else {
+                        var hreftmp = "/Posts/Index?cat=" + categoriesJoin;
+                        window.location.href = hreftmp;
+                    }
+
+                }
+
+            }
+            else {
+                var vrednost = $(this).attr('id');
+                var indexArray = categoryArray.indexOf(vrednost);
+                categoryArray.splice(indexArray, 1);
+
+                //categoryArray.splice(categoryArray.indexOf($(this).val()), 1);
+
+                var categoriesJoin = categoryArray.join("|");
+                if (sortView) {
+                    var hreftmp = "/Posts/Index?sortType=" + sortView + "&cat=" + categoriesJoin;
+                    window.location.href = hreftmp;
+                }
+                else {
+                    var hreftmp = "/Posts/Index?cat=" + categoriesJoin;
+                    window.location.href = hreftmp;
+                }
+            }
+
+
+        });
+
+        $(".categorySort").change(function () {
+
+            debugger;
+            var categorytmp = categoryViewbag;
+            if (!categoryViewbag) {
+                categorytmp = "сите"
+            }
+
+            var val = $(this).attr('id');
+            var hreftmp = "/Posts/Index?sortType=" + val + "&cat=" + categorytmp;
+
+            window.location.href = hreftmp;
+        });
+
+    </script>
+
+}

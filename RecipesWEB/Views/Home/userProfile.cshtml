@@ -1,0 +1,180 @@
+﻿@model RecipesWEB.Models.viewModels.userProfileViewModel
+@using PagedList.Mvc;
+
+
+
+
+
+
+
+<hr />
+
+<style>
+
+    .paddingSecond {
+        padding:0;
+        padding-right:10px;
+        padding-left:10px;
+    }
+    .pagingStyle {
+        padding-left:20px;
+        padding-right:20px
+    }
+    hr {
+        padding:5px;
+        margin:0;
+    }
+
+    body {
+            padding-top: 20px;
+            background-image: url('../Content/images/background-knife.jpeg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% auto;
+        }
+
+</style>
+
+<div class="row detailsBackgroundColor" style="margin-top:30px;padding:20px">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-2">
+            <img class="img-responsive img-rounded" src="~/Content/images/userImages/@Model.image">
+        </div>
+        <div class="col-md-4">
+
+            <h3>@Model.UserName</h3><hr />
+            <h4>Рејтинг : @Model.rating</h4><hr />
+            <h4>Број на рецепти : @Model.numPosts</h4>
+        </div>
+    </div>
+    <br />
+    @if (Model.favoritePostsAll.Count() != 0)
+    {
+        <div class="row detailsBackgroundColor pagingStyle">
+            <h3 class="text-center">Омилени рецепти</h3>
+            <hr />
+            <div>
+                <div class="flex-row row">
+                    @foreach (var item in Model.favoritePostsAll)
+                {
+                    <div class="col-md-3" style="margin-bottom:10px;margin-top:5px; padding-left:10px;padding-right:10px">
+                        <div class="card cardtest hoverable">
+                            <a href="/Posts/Details?id=@item.Id">
+                                <img src="~/Content/images/postImages/@item.imagePath" alt="слика на рецептот" class="img-responsive" />
+                            </a>
+                            <div class="overTextPostsTop">
+                                <div class="paddingSecond">
+                                    <div class="spanClassPostsTop" style="padding:10px">
+                                        <div class="spacer text-center">@item.postTitle</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="overTextPostsBottom">
+                                <div class="paddingSecond">
+                                    <div class="spanClassPostsBottom">
+                                        <div class="row">
+                                            <div class="col-md-6 text-left">
+                                                <div><span class="glyphicon glyphicon-user"></span> @item.UserName <br /></div>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <div><span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating<br /></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 text-left">
+                                                <div>@item.postCategory<br /></div>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <div><span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count() <br /></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+
+                @if (ViewBag.showFavPosts == "yes")
+                {
+                <div class="row text-center">
+                    @Html.PagedListPager(Model.favoritePostsAll, page => Url.Action("userProfile", new { userId = Model.UserId, favPosts = page, userPosts = ViewBag.userNumber }))
+                </div>
+                }
+
+
+
+            </div>
+
+        </div>
+    }
+
+    <br />
+
+    @if (Model.userPostsAll.Count() != 0)
+    {
+        <div class="row detailsBackgroundColor pagingStyle">
+            <h3 class="text-center">Рецепти од овој корисник</h3>
+            <hr />
+            <div>
+                <div class="flex-row row">
+                    @foreach (var item in Model.userPostsAll)
+                {
+                        <div class="col-md-3" style="margin-bottom:10px;margin-top:5px; padding-left:10px;padding-right:10px">
+                            <div class="card cardtest hoverable">
+                                <a href="/Posts/Details?id=@item.Id">
+                                    <img src="~/Content/images/postImages/@item.imagePath" alt="слика на рецептот" class="img-responsive" />
+                                </a>
+                                <div class="overTextPostsTop">
+                                    <div style="padding:10px;padding-top:0">
+                                        <div class="spanClassPostsTop" style="padding:10px">
+                                            <div class="spacer text-center">@item.postTitle</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="overTextPostsBottom">
+                                    <div class="paddingSecond">
+                                        <div class="spanClassPostsBottom">
+                                            <div class="row">
+                                                <div class="col-md-6 text-left">
+                                                    <div><span class="glyphicon glyphicon-user"></span> @item.UserName <br /></div>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <div><span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating<br /></div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 text-left">
+                                                    <div>@item.postCategory<br /></div>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <div><span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count() <br /></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (ViewBag.showUserPosts == "yes")
+                {
+                    <div class="row text-center">
+                        @Html.PagedListPager(Model.userPostsAll, page => Url.Action("userProfile", new { userId = Model.UserId, favPosts = ViewBag.favNumber, userPosts = page }))
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row text-center" style="margin-bottom:200px">
+            <h4><strong>Корисникот сеуште нема прикачено рецепти.</strong></h4>
+        </div>
+    }
+
+</div>

@@ -1,0 +1,168 @@
+﻿@using Microsoft.AspNet.Identity
+@model RecipesWEB.Models.viewModels.notificationsViewModel
+
+
+<style>
+        .badge {
+      padding: 1px 9px 2px;
+      font-size: 12.025px;
+      font-weight: bold;
+      white-space: nowrap;
+      color: #ffffff;
+      background-color: #953b39;
+      -webkit-border-radius: 9px;
+      -moz-border-radius: 9px;
+      border-radius: 9px;
+    }
+</style>
+
+@if (Request.IsAuthenticated)
+{
+
+
+    <ul class="nav navbar-nav navbar-right">
+        <li style="margin-top:10px;margin-right:10px">
+            <form class="form-inline pull-xs-right waves-effect waves-light" method="post" action="/Home/Search">
+                <input type="text" id="searchString" name="searchString" class="form-control" placeholder="Пребарување">
+            </form>
+        </li>
+        @if (ViewBag.admin == "yes")
+        {
+            <li style="margin-top:5px">
+
+                <a href="/Posts/approveIndex">
+                    @if (Model.adminNum > 0)
+                    {
+                        <div class="badge" style="padding:5px"><smal>!</smal></div>
+                    }
+                    <span class="glyphicon glyphicon-user"></span>
+                </a>
+            </li>
+
+        }
+
+        <li class="nav-item dropdown" style="margin-top:5px">
+            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+
+                @if (Model.notificationNumber > 0)
+                {
+                    <div class="badge" style="padding:5px"><smal>@Model.notificationNumber</smal></div>
+                }
+                <span class="glyphicon glyphicon-bell"></span>
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu dropdown-content" style="background:#dbf3d8;width:300px">
+                @foreach (var item in Model.notifications)
+                {
+
+                    if (@item.notificationType == "normal")
+                    {
+                <li class="card" style="margin:5px">
+                    <a href="/Partial/viewNotification?id=@item.Id&postId=@item.postId">
+                        <div class="col-md-12">
+                            <b>
+                                @item.fromUserName<br />
+                            </b>
+                            коментираше на ваш рецепт<br />
+
+                            <small><muted>на: @item.CreatedDate.ToShortDateString() во: @item.CreatedDate.ToShortTimeString()</muted></small>
+                        </div>
+                    </a>
+                </li>
+                    }
+                    else if (@item.notificationType == "favorite")
+                    {
+                <li class="card" style="margin:5px">
+                    <a href="/Partial/viewNotification?id=@item.Id&postId=@item.postId">
+                        <div class="col-md-12">
+                            <b>
+                                @item.fromUserName<br />
+                            </b>
+                            коментираше на омилен рецепт<br />
+
+                            <small><muted>на: @item.CreatedDate.ToShortDateString() во: @item.CreatedDate.ToShortTimeString()</muted></small>
+                        </div>
+                    </a>
+                </li>
+                    }
+                    else
+                    {
+                <li class="card" style="margin:5px">
+                    <a href="/Partial/viewNotification?id=@item.Id&postId=@item.postId">
+                        <div class="col-md-12">
+                            На <b>
+                                @item.fromUserName<br />
+                            </b>
+                            му се допаѓа ваш рецепт<br />
+                            <small><muted>на: @item.CreatedDate.ToShortDateString() во: @item.CreatedDate.ToShortTimeString()</muted></small>
+                        </div>
+                    </a>
+                </li>
+                    }
+
+                }
+                <li>
+                    <a href="/Partial/notifications" class="text-center" style="margin:5px;margin-bottom:0;margin-top:0;padding:0">
+                        <small>
+                            <b>Види ги сите известувања</b>
+                        </small>
+                        @if (@Model.viewMoreStatus)
+                        {
+                        <div class="badge badge-danger">!</div>
+                        }
+                    </a>
+
+                </li>
+
+
+            </ul>
+
+        </li>
+        <li class="nav-item dropdown" style="margin-top:5px">
+            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@User.Identity.GetUserName() <b class="caret"></b></a>
+            <ul class="dropdown-menu dropdown-content" style="background:#dbf3d8">
+                <li>
+                    <a href="/Home/userProfile?userId=@User.Identity.GetUserId()"><span class="glyphicon glyphicon-user"></span>  Кориснички профил</a>
+                </li>
+                <li>
+                    <a href="/Home/postStatus?id=@User.Identity.GetUserId()"><span class="glyphicon glyphicon-tasks"></span>  Статус на постови</a>
+                </li>
+                <li>
+                    <a href="/Manage/Index"><span class="glyphicon glyphicon-wrench"></span>  Поднесувања</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                    }
+                    <a href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-log-out"></span>  Одјава</a>
+                </li>
+            </ul>
+        </li>
+
+
+
+
+
+
+    </ul>
+
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li style="margin-top:10px;margin-right:10px">
+            <form class="form-inline pull-xs-right waves-effect waves-light" method="post" action="/Home/Search">
+                <input type="text" id="searchString" name="searchString" class="form-control" placeholder="Пребарување">
+            </form>
+        </li>
+        <li style="margin-top:5px;margin-right:10px">@Html.ActionLink("Регистрација", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li style="margin-top:5px;margin-right:10px">@Html.ActionLink("Најава", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+
+    </ul>
+}
+
+

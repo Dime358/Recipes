@@ -1,0 +1,514 @@
+﻿@model RecipesWEB.Models.viewModels.homePageVewModel
+
+
+
+
+
+<br />
+<br />
+
+<link href="~/Content/customCss/colorCustom.css" rel="stylesheet" />
+
+<style>
+
+hr {
+    border: none;
+    height: 5px;
+
+    background-color: rgba(20, 134, 50, 0.77); 
+    margin:0;
+    padding:0;
+    margin-bottom:20px;
+}
+
+h3{
+    padding:5px;
+    margin:0;
+}
+
+</style>
+
+<div class="row homeBackgroundColor" style="padding-top:15px">
+
+    <div class="col-md-5">
+
+        <div class="row sliderMain slider">
+
+            @foreach (var item in Model.topRatingPostsAll)
+            {
+            <div class="imageMain card hoverable" style="margin-bottom:5px;cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                <a href="/Posts/Details?id=@item.Id">
+                    <img src="~/Content/images/postImages/@item.imagePath" alt="" class="img-responsive" />
+                </a>
+                <div class="overText"><div class="spanClass">@item.postTitle</div></div>
+
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="flex-row row">
+
+            @foreach (var item in Model.latestNews)
+            {
+
+            <div class="col-md-4 " style="margin-bottom:10px;margin-top:5px; padding-left:10px;padding-right:10px;cursor: pointer" onclick="myhref('/News/Details?id=@item.Id')">
+                <div class="card hoverable">
+                        <img src="~/Content/images/newsImages/@item.imagePath" alt="" class="img-responsive" />
+                    <div class="overTextSecond"><div class="spanClass">@item.newsTitle</div></div>
+
+                </div>
+            </div>
+            }
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="row homeBackgroundColor">
+
+    <div class="col-md-9">
+        <div class="row" style="padding:30px;padding-top:0">
+            <div class="row">
+                <br />
+                <div class="col-md-12 detailsBackgroundColor" style="padding:5px">
+                    <h3><strong>Најнови рецепти</strong></h3>
+                </div>
+                <hr />
+                
+                    <input type="hidden" value="#ResSlid1" id="recentParent" />
+                    <ul class="nav nav-tabs col-md-11 col-md-offset-1">
+                        <li class="active ulSliderBackgroundColor"><a data-toggle="tab" href="#menu1" class="recentNav" id="#ResSlid1">Сите категории</a></li>
+                        <li class="ulSliderBackgroundColor"><a data-toggle="tab" href="#menu2" class="recentNav" id="#ResSlid2">Појадок</a></li>
+                        <li class="ulSliderBackgroundColor"><a data-toggle="tab" href="#menu3" class="recentNav" id="#ResSlid3">Ручек</a></li>
+                        <li class="ulSliderBackgroundColor"><a data-toggle="tab" href="#menu4" class="recentNav" id="#ResSlid4">Вечера</a></li>
+                        <li class="ulSliderBackgroundColor"><a data-toggle="tab" href="#menu5" class="recentNav" id="#ResSlid5">Десерт</a></li>
+                        <li class="ulSliderBackgroundColor"><button class='btn btnSliderColor btn-sm leftLstR'><i class="glyphicon glyphicon-arrow-left"></i></button></li>
+                        <li class="ulSliderBackgroundColor"><button class='btn btnSliderColor btn-sm rightLstR'><i class="glyphicon glyphicon-arrow-right"></i></button></li>
+                    </ul>
+            </div>
+            <br />
+            <div class="tab-content">
+                <div id="menu1" class="tab-pane fade in active">
+                    <div class="resCarouselR" data-items="1,2,3,3" data-slide="1">
+                        <div class="resCarousel-innerR row flex-row">
+                            @foreach (var item in Model.recentPostsAll)
+                            {
+                                <div class="itemR col-md-4" style="padding:0px;cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                                    <div class="imageMainSlider card cardtest hoverable cardTextBackgroundColor" style="margin-left:10px;margin-right:10px;margin-bottom:5px;">
+                                        <img src="~/Content/images/postImages/@item.imagePath" alt="" class="img-responsive" />
+
+                                        <div class="overTextSlider" style="padding:10px">
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>@item.UserName
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count()
+                                            </div>
+
+                                        </div>
+                                        <h4 class="text-center textWhiteColor" style="padding:10px;margin:0px">@item.postTitle</h4>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <div class="resCarouselR" data-items="1,2,3,3" data-slide="1">
+                        <div class="resCarousel-innerR row flex-row">
+                            @foreach (var item in Model.recentPostsPredjadenja)
+                            {
+                                <div class="itemR col-md-4" style="padding:0px;cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                                    <div class="imageMainSlider card cardtest hoverable cardTextBackgroundColor" style="margin-left:10px;margin-right:10px;margin-bottom:5px;">
+                                        <img src="~/Content/images/postImages/@item.imagePath" alt="" class="img-responsive" />
+                                        <div class="overTextSlider" style="padding:10px">
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>@item.UserName
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count()
+                                            </div>
+
+                                        </div>
+                                        <h4 class="text-center textWhiteColor" style="padding:10px;margin:0px">@item.postTitle</h4>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div id="menu3" class="tab-pane fade">
+                    <div class="resCarouselR" data-items="1,2,3,3" data-slide="1">
+                        <div class="resCarousel-innerR row flex-row">
+                            @foreach (var item in Model.recentPostsGlavni)
+                            {
+                                <div class="itemR col-md-4" style="padding:0px;cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                                    <div class="imageMainSlider card cardtest hoverable cardTextBackgroundColor" style="margin-left:10px;margin-right:10px;margin-bottom:5px;">
+                                        <img src="~/Content/images/postImages/@item.imagePath" alt="" class="img-responsive" />
+                                        <div class="overTextSlider" style="padding:10px">
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>@item.UserName
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count()
+                                            </div>
+
+                                        </div>
+                                        <h4 class="text-center textWhiteColor" style="padding:10px;margin:0px">@item.postTitle</h4>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div id="menu4" class="tab-pane fade">
+                    <div class="resCarouselR" data-items="1,2,3,3" data-slide="1">
+                        <div class="resCarousel-innerR row flex-row">
+                            @foreach (var item in Model.recentPostsDeserti)
+                            {
+                                <div class="itemR col-md-4" style="padding:0px;cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                                    <div class="imageMainSlider card cardtest hoverable cardTextBackgroundColor" style="margin-left:10px;margin-right:10px;margin-bottom:5px;">
+                                        <img src="~/Content/images/postImages/@item.imagePath" alt="" class="img-responsive" />
+                                        <div class="overTextSlider" style="padding:10px">
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>@item.UserName
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count()
+                                            </div>
+
+                                        </div>
+                                        <h4 class="text-center textWhiteColor" style="padding:10px;margin:0px">@item.postTitle</h4>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div id="menu5" class="tab-pane fade">
+                    <div class="resCarouselR" data-items="1,2,3,3" data-slide="1">
+                        <div class="resCarousel-innerR row flex-row">
+                            @foreach (var item in Model.recentPostsDodatoci)
+                            {
+                                <div class="itemR col-md-4" style="padding:0px;cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                                    <div class="imageMainSlider card cardtest hoverable cardTextBackgroundColor" style="margin-left:10px;margin-right:10px;margin-bottom:5px;">
+                                        <img src="~/Content/images/postImages/@item.imagePath" alt="" class="img-responsive" />
+                                        <div class="overTextSlider" style="padding:10px">
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>@item.UserName
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count()
+                                            </div>
+
+                                        </div>
+                                        <h4 class="text-center textWhiteColor" style="padding:10px;margin:0px">@item.postTitle</h4>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            
+        </div>
+
+        <div class="row" style="padding:30px;padding-top:0">
+            <div class="row">
+                <br />
+                <div class="col-md-12 detailsBackgroundColor" style="padding:5px">
+                    <h3><strong>Најгласани рецепти</strong></h3>
+                </div>
+
+                <hr />
+                <input type="hidden" value="#ResSlid7" id="topParent" />
+                <ul class="nav nav-tabs col-md-11 col-md-offset-1">
+                    <li class="active ulSliderBackgroundColor"><a data-toggle="tab" href="#menut1" class="topNav" id="#ResSlid7">Сите категории</a></li>
+                    <li class="ulSliderBackgroundColor"><a data-toggle="tab" href="#menut2" class="topNav" id="#ResSlid8">Појадок</a></li>
+                    <li class="ulSliderBackgroundColor"><a data-toggle="tab" href="#menut3" class="topNav" id="#ResSlid9">Ручек</a></li>
+                    <li class="ulSliderBackgroundColor"><a data-toggle="tab" href="#menut4" class="topNav" id="#ResSlid10">Вечера</a></li>
+                    <li class="ulSliderBackgroundColor"><a data-toggle="tab" href="#menut5" class="topNav" id="#ResSlid11">Десерт</a></li>
+                    <li class="ulSliderBackgroundColor"><button class='btn btn-sm btnSliderColor leftLstT'><i class="glyphicon glyphicon-arrow-left"></i></button></li>
+                    <li class="ulSliderBackgroundColor"><button class='btn btn-sm btnSliderColor rightLstT'><i class="glyphicon glyphicon-arrow-right"></i></button></li>
+                </ul>
+            </div>
+            <br />
+            <div class="tab-content">
+                <div id="menut1" class="tab-pane fade in active">
+                    <div class="resCarouselT" data-items="1,2,3,3" data-slide="1">
+                        <div class="resCarousel-innerT row flex-row">
+                            @foreach (var item in Model.topRatingPostsAll)
+                            {
+                            <div class="itemT col-md-4" style="padding:0px;cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                                <div class="imageMainSlider card cardtest hoverable cardTextBackgroundColor" style="margin-left:10px;margin-right:10px;margin-bottom:5px;">
+
+                                    <img src="~/Content/images/postImages/@item.imagePath" alt="" class="img-responsive" />
+
+
+                                    <div class="overTextSlider" style="padding:10px">
+                                        <div class="badge badge-danger">
+                                            <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>@item.UserName
+                                        </div><br />
+                                        <div class="badge badge-danger">
+                                            <span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating
+                                        </div><br />
+                                        <div class="badge badge-danger">
+                                            <span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count()
+                                        </div>
+                                    </div>
+                                        <h4 class="text-center textWhiteColor" style="padding:10px;margin:0px">@item.postTitle</h4>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div id="menut2" class="tab-pane fade">
+                    <div class="resCarouselT" data-items="1,2,3,3" data-slide="1">
+                        <div class="resCarousel-innerT row flex-row">
+                            @foreach (var item in Model.topRatingPostsPredjadenja)
+                            {
+                            <div class="itemT col-md-4" style="padding:0px;cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                                <div class="imageMainSlider card cardtest hoverable cardTextBackgroundColor" style="margin-left:10px;margin-right:10px;margin-bottom:5px;">
+
+                                    <img src="~/Content/images/postImages/@item.imagePath" alt="" class="img-responsive" />
+
+                                    <div class="overTextSlider" style="padding:10px">
+                                        <div class="badge badge-danger">
+                                            <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>@item.UserName
+                                        </div><br />
+                                        <div class="badge badge-danger">
+                                            <span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating
+                                        </div><br />
+                                        <div class="badge badge-danger">
+                                            <span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count()
+                                        </div>
+
+                                    </div>
+                                    <h4 class="text-center textWhiteColor" style="padding:10px;margin:0px">@item.postTitle</h4>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div id="menut3" class="tab-pane fade">
+                    <div class="resCarouselT" data-items="1,2,3,3" data-slide="1">
+                        <div class="resCarousel-innerT row flex-row">
+                            @foreach (var item in Model.topRatingPostsGlavni)
+                            {
+                                <div class="itemT col-md-4" style="padding:0px;cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                                    <div class="imageMainSlider card cardtest hoverable cardTextBackgroundColor" style="margin-left:10px;margin-right:10px;margin-bottom:5px;">
+
+                                        <img src="~/Content/images/postImages/@item.imagePath" alt="" class="img-responsive" />
+
+                                        <div class="overTextSlider" style="padding:10px">
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>@item.UserName
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count()
+                                            </div>
+
+                                        </div>
+                                        <h4 class="text-center textWhiteColor" style="padding:10px;margin:0px">@item.postTitle</h4>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div id="menut4" class="tab-pane fade">
+                    <div class="resCarouselT" data-items="1,2,3,3" data-slide="1">
+                        <div class="resCarousel-innerT row flex-row">
+                            @foreach (var item in Model.topRatingPostsDeserti)
+                            {
+                                <div class="itemT col-md-4" style="padding:0px;cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                                    <div class="imageMainSlider card cardtest hoverable cardTextBackgroundColor" style="margin-left:10px;margin-right:10px;margin-bottom:5px;">
+
+                                        <img src="~/Content/images/postImages/@item.imagePath" alt="" class="img-responsive" />
+
+                                        <div class="overTextSlider" style="padding:10px">
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>@item.UserName
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count()
+                                            </div>
+
+                                        </div>
+                                        <h4 class="text-center textWhiteColor" style="padding:10px;margin:0px">@item.postTitle</h4>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div id="menut5" class="tab-pane fade">
+                    <div class="resCarouselT" data-items="1,2,3,3" data-slide="1">
+                        <div class="resCarousel-innerT row flex-row">
+                            @foreach (var item in Model.topRatingPostsDodatoci)
+                            {
+                                <div class="itemT col-md-4" style="padding:0px;cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                                    <div class="imageMainSlider card cardtest hoverable cardTextBackgroundColor" style="margin-left:10px;margin-right:10px;margin-bottom:5px;">
+
+                                        <img src="~/Content/images/postImages/@item.imagePath" alt="" class="img-responsive" />
+
+                                        <div class="overTextSlider" style="padding:10px">
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>@item.UserName
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating
+                                            </div><br />
+                                            <div class="badge badge-danger">
+                                                <span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count()
+                                            </div>
+
+                                        </div>
+                                        <h4 class="text-center textWhiteColor" style="padding:10px;margin:0px">@item.postTitle</h4>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <br />
+            <div class="col-md-12 detailsBackgroundColor" style="padding:5px">
+                <h3><strong>Најдобри корисници</strong></h3>
+            </div>
+
+            <hr />
+
+            @foreach (var item in Model.topRatingUsers)
+            {
+            <div class="hoverable sideListBackgroundColor" style="margin-bottom:10px;margin-right:10px;cursor: pointer" onclick="myhref('/Home/userProfile?userId=@item.Item1.Id')">
+                <div class="row">
+                    <div class="col-md-5" style="padding-right:0">
+                        <img class="img-responsive" src="~/Content/images/userImages/@item.Item3" alt="icon">
+                    </div>
+                    <div class="col-md-7" style="padding-bottom:0;padding-top:10px;padding-left:0">
+
+                        <div class="col-md-12 ">
+                            <h5>
+                                <strong>
+                                        <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>
+                                        @item.Item1.UserName
+                                </strong>
+                            </h5>
+                        </div>
+                        <div class="col-md-12 ">
+                            <h5><strong><span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.Item2</strong></h5>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+        function myhref(web) {
+            window.location.href = web;
+        }
+    </script>
+
+    <script type="text/javascript">
+
+
+
+
+        $(document).ready(function () {
+
+            $(".sliderMain").slick({
+                dots: false,
+                arrows: false,
+                infinite: true,
+                speed: 700,
+                autoplay: true,
+                autoplaySpeed: 5000,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+
+            });
+
+
+            $('.recentNav').click(function () {
+                debugger;
+                var parentName = $(this).attr('id');
+                $('#recentParent').val(parentName);
+            });
+
+            $('.topNav').click(function () {
+                debugger;
+                var parentName = $(this).attr('id');
+                $('#topParent').val(parentName);
+            });
+
+
+        });
+
+    </script>
+
+
+
+
+}

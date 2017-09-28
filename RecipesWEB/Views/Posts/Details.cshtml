@@ -1,0 +1,543 @@
+﻿@model RecipesWEB.Models.viewModels.postDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+    var date = DateTime.UtcNow;
+
+}
+
+<link href="~/Content/customCss/labels.css" rel="stylesheet" />
+
+<link href="~/Content/customCss/listGroup.css" rel="stylesheet" />
+
+
+<style>
+    .cn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bottomText {
+        color: #ffffff;
+    }
+
+    hr.lineText {
+        border: none;
+        height: 5px;
+        background-color: rgba(20, 134, 50, 0.77);
+        margin: 0;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+
+    h3 {
+        padding: 5px;
+        margin: 0;
+    }
+</style>
+
+
+<div class="container">
+
+    <input id="nameUser" class="hidden" value="@Model.post.UserName">
+    <input id="createdDate" class="hidden" value="@date">
+
+    <br /><br />
+    <div class="row detailsBackgroundColor">
+
+        <div class="row" style="padding:20px">
+            <div class="col-md-6" style="margin-top:30px">
+                <img src="~/Content/images/postImages/@Model.post.imagePath" class="thumbnail" />
+            </div>
+            <div class="col-md-6" style="padding:20px;">
+                <div class="row">
+                    <h3 class="text-center"><strong>@Model.post.postTitle</strong></h3>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        Креирано од: <a href="/Home/userProfile?userId=@Model.post.UserId"><h4>@Model.post.UserName</h4></a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        Категорија: <a href="/Posts/Index?cat=@Model.post.postCategory"><h4>@Model.post.postCategory</h4></a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        Креирано на: <h5><strong>@Model.post.CreatedDate.ToShortDateString()</strong></h5>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        Време на подготовка: <h5><strong>@Model.post.prepTime</strong> минути</h5>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        Тежина на изработка: <h5><strong>@Model.post.difficulty</strong></h5>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        Број на порции: <h5><strong>@Model.post.numPortions</strong></h5>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>
+                            <span id="ratingId">@Model.post.postRating</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <form method="post" action=" " id="increaseFrom">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="postId" value="@Model.post.Id" />
+                                <input type="hidden" name="userId" value="@Model.post.UserId" />
+
+                            </form>
+                            <form method="post" action=" " id="decreaseFrom">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="postId" value="@Model.post.Id" />
+                                <input type="hidden" name="userId" value="@Model.post.UserId" />
+                            </form>
+                        </div>
+
+                        @if (ViewBag.votedState == "like")
+                        {
+                            <button id="increase" class="btn btn-sm btnApproveColor"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                            <button id="decrease" class="btn btn-sm btnBledo"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+                        }
+                        else if (ViewBag.votedState == "dislike")
+                        {
+                            <button id="increase" class="btn btn-sm btnBledo"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                            <button id="decrease" class="btn btn-sm btnRemoveColor"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+                        }
+                        else
+                        {
+                            <button id="increase" class="btn btn-sm btnBledo"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                            <button id="decrease" class="btn btn-sm btnBledo"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+                        }
+
+                       
+                    </div>
+                    <div class="col-md-4 text-center">
+
+                        @if (ViewBag.showFavorite == "yes")
+                        {
+                            if (ViewBag.favorite == "Favorite")
+                            {
+                                <a id="btnfavorite" name="btnfavorite" class="btn btn-sm favorite ">
+                                    <span id="favText" class="glyphicon glyphicon-star"></span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a id="btnfavorite" name="btnfavorite" class="btn btn-sm notFavorite">
+                                    <span id="favText" class="glyphicon glyphicon-star-empty"></span>
+                                </a>
+                            }
+                        }
+
+                    </div>
+                </div>
+                <hr />
+                <div class="row" style="padding-left:20px">
+
+                    <div>
+                        <span class="glyphicon glyphicon-tags" style="margin-right:5px;margin-left:10px"></span>
+                        @if (Model.post.postTags != null)
+                        {
+                            string[] tagsClean = Model.post.postTags.Split(',');
+                            foreach (var tagItem in tagsClean)
+                            {
+                                <span class="label label-large label-pink arrowed-right">@tagItem</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="label label-primary">Нема тагови за овој рецепт</span>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row ">
+            @if (ViewBag.showControlls == "yes")
+            {
+                <div class="col-md-4 pull-right">
+                    @if (ViewBag.showAdminApprove == "yes")
+                    {
+                        <a class="btn btn-sm btnApproveColor" href="/Posts/approveChange/?id=@Model.postId&tip=post">Одобри</a>
+                    }
+                    <a class="btn btn-sm btnDefaultColor" href="/Posts/Edit?id=@Model.postId">Едитирај</a>
+                    <a class="btn btn-sm btnRemoveColor" href="/Posts/Delete/@Model.postId">Избриши</a>
+                </div>
+            }
+        </div>
+        <div class="row" style="padding:20px">
+            <div class="col-md-8" style="padding:20px;">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="col-md-12 detailsBackgroundColor" style="padding:5px">
+                            <h4 class="text-center"><strong>Состојки</strong></h4>
+                        </div>
+                        <hr class="lineText" />
+                        <ul class="list-group adminBackgroundColor">
+
+                            @if (Model.post.ingredients != null)
+                            {
+                                string[] ingredientsClean = Model.post.ingredients.Split(',');
+                                foreach (var ingredientsItem in ingredientsClean)
+                                {
+                                    <li class="list-group-item" style="padding-top:5px">
+                                        <h5><strong>@ingredientsItem</strong></h5>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="list-group-item">
+                                    <p>No ingredients sorry</p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-md-8 ">
+                        <div class="col-md-12 detailsBackgroundColor" style="padding:5px">
+                            <h4 class="text-center"><strong>Начин на подготовка</strong></h4>
+                        </div>
+                        <hr class="lineText" />
+                        <p style="white-space: pre-wrap;">@Model.post.postBody</p>
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form method="post" action=" " id="frmAddComment">
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                <input type="hidden" name="userId" value="@Model.post.UserId" />
+                                <input type="hidden" name="userName" value="@Model.post.UserName" />
+                                <input type="hidden" name="PostsID" value="@Model.post.Id" />
+                                <input type="hidden" name="CreatedDate" value="@date" />
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" id="commentBody" name="CommentBody" class="form-control" />
+                                    <span class="input-group-btn">
+                                        <button type="submit" id="btnSaveComment" class="btn btnDefaultColor">Нов коментар</button>
+                                    </span>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+
+                </div>
+
+
+                <div class="row" id="commentsSection" style="overflow-y: auto; height:400px;padding:15px">
+                    <div class="col-md-12 detailsBackgroundColor" style="padding:5px">
+                        <h4 class="text-center"><strong>Коментари за овој рецепт</strong></h4>
+                    </div>
+                    <hr class="lineText" />
+                    <ul class="list-unstyled" id="commentsList">
+
+                        @foreach (var comment in Model.comments)
+                        {
+                            <li>
+                                <div class="row" style="padding:15px">
+                                    <div class="col-md-2">
+                                        <a href="/Home/userProfile?userId=@comment.Item1.UserId">
+                                            <img src="~/Content/images/userImages/@comment.Item2" class="img-thumbnail img-responsive" />
+                                        </a>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" id="headerID">
+                                                <span class="glyphicon glyphicon glyphicon-user" style="margin-right:3px"></span>
+                                                <strong>@comment.Item1.UserName</strong>
+
+                                                <span class="glyphicon glyphicon glyphicon glyphicon-calendar" style="margin-right:3px;margin-left:5px"></span>
+
+                                                <span class="text-muted">@comment.Item1.CreatedDate.ToShortDateString()</span>
+
+                                                <span class="glyphicon glyphicon glyphicon glyphicon-time" style="margin-right:3px;margin-left:3px"></span>
+                                                <span class="text-muted">@comment.Item1.CreatedDate.ToShortTimeString()</span>
+                                                @if (ViewBag.showCommentControls == "yes")
+                                                {
+                                                    if (comment.Item3 == "yes")
+                                                    {
+                                                        <a class="btn-link btn-sm removeComment pull-right" onclick="modalShow(@comment.Item1.Id)">избриши</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="dropdown pull-right">
+                                                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                                                пријави
+                                                                <span class="caret"></span>
+                                                            </a>
+                                                            <ul class="dropdown-menu">
+                                                                <li><button class="btn  btn-block btnRemoveColor reportSpam" value="@comment.Item1.Id" style="padding:3px;margin-bottom:5px"><small>спам</small></button></li>
+                                                                <li><button class="btn  btn-block btnRemoveColor reportOffensive" value="@comment.Item1.Id" style="padding:3px;margin-top:0"><small>навредливо</small></button></li>
+                                                            </ul>
+                                                        </div>
+                                                    }
+                                                }
+
+                                            </div>
+                                            <div class="panel-body">
+                                                @comment.Item1.CommentBody
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </li>
+                        }
+                    </ul>
+
+                </div>
+
+
+
+            </div>
+            <div class="col-md-4" style="padding:20px;">
+
+                <div class="col-md-12 detailsBackgroundColor" style="padding:5px">
+                    <h4 class="text-center"><strong>Други рецепти од овој корисник</strong></h4>
+                </div>
+                <hr class="lineText" />
+
+                @foreach (var item in Model.postsByUser)
+                {
+                    <div class="hoverable sideListBackgroundColor" style="margin-bottom:10px">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <a href="/Posts/Details?id=@item.Id">
+                                    <img class="img-responsive" src="~/Content/images/postImages/@item.imagePath" alt="icon">
+                                </a>
+                            </div>
+                            <div class="col-md-7" style="padding-bottom:0;padding-top:10px;padding-left:0">
+
+                                <div class="col-md-11" style="padding:0">
+                                    <a href="/Posts/Index?cat=@item.postCategory">@item.postCategory</a>
+                                </div>
+                                <div class="col-md-11" style="padding:0">
+                                    <h5><b>@item.postTitle</b></h5>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+        <div class="col-md-12" style="padding:40px;padding-top:0">
+            <div class="col-md-12 detailsBackgroundColor" style="padding:5px">
+                <h4 class="text-left"><strong>Други рецепти од оваа категорија</strong></h4>
+            </div>
+            <hr class="lineText" />
+            <div class="regular slider flex-row row">
+                @foreach (var item in Model.postsByCategory)
+            {
+
+                    <div class="col-md-4" style="cursor: pointer" onclick="myhref('/Posts/Details?id=@item.Id')">
+                        <div class="card cardtest hoverable cardTextBackgroundColor" style="height:250px">
+                            <img src="~/Content/images/postImages/@item.imagePath" class="thumbnail" />
+                            <div class="overTextSlider" style="padding:20px">
+                                <div class="badge badge-danger">
+                                    <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span>@item.UserName
+                                </div><br />
+                                <div class="badge badge-danger">
+                                    <span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span>@item.postRating
+                                </div><br />
+                                <div class="badge badge-danger">
+                                    <span class="glyphicon glyphicon glyphicon-comment" style="margin-right:5px"></span>@item.Comments.Count()
+                                </div>
+                            </div>
+
+                            <h4 class="text-center bottomText overTextSliderDetails" style="padding:5px;margin:0px">@item.postTitle</h4>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="container">
+
+        <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modalBody">Modal Header</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="btn-group btn-group-justified">
+                            @Html.ActionLink("Регистрација", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-block btn-sm btn-default" })
+                            @Html.ActionLink("Најава", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "btn btn-block btn-sm btn-default" })
+                            <a class="btn btn-block btn-default btn-sm" data-dismiss="modal">излези</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="container">
+
+    <div class="modal fade" id="myModalComment" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalBodyComment">Дали сте сигурни дека сакате да го избришете коментарот?</h3>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="commentRemoveId" />
+                    <div class="btn-group btn-group-justified" id="btnGrpComment">
+                        <a class="btn btn-block btn-default btn-sm" id="removeCommentConfirm">Да</a>
+                        <a class="btn btn-block btn-default btn-sm" data-dismiss="modal">Не</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+
+    <div class="modal fade" id="modalReport" role="dialog" data-backdrop="static" data-keyboard="true">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="modal-title">Вашата пријава е испратена на разгледување.Ви благодариме за придонесот.</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">излез</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+        var userName = '@Model.LoggedUserName';
+        var postIDReport = '@Model.post.Id';
+    </script>
+
+    <script type="text/javascript">
+        function myhref(web) {
+            window.location.href = web;
+        }
+
+
+        function modalShow(id) {
+            var commentId = id;
+            $('#commentRemoveId').val(commentId);
+            $('#btnGrpComment').show();
+            $('#myModalComment').modal('show');
+        }
+    </script>
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            $(".regular").slick({
+                dots: true,
+                infinite: true,
+                speed: 1000,
+                slidesToShow: 4,
+                slidesToScroll: 4,
+
+
+                responsive: [
+                  {
+                      breakpoint: 1024,
+                      settings: {
+                          slidesToShow: 3,
+                          slidesToScroll: 3,
+                          infinite: true,
+                          dots: true
+                      }
+                  },
+                  {
+                      breakpoint: 600,
+                      settings: {
+                          slidesToShow: 2,
+                          slidesToScroll: 2
+                      }
+                  },
+                  {
+                      breakpoint: 480,
+                      settings: {
+                          slidesToShow: 1,
+                          slidesToScroll: 1
+                      }
+                  }
+
+                ]
+            });
+
+            debugger;
+
+            var showComments = '@(ViewBag.showComments)';
+            if (showComments == "no") {
+                $("#commentsSection").hide();
+            }
+
+            var favoriteStatus = '@(ViewBag.favorite)';
+            if (favoriteStatus != null) {
+                if (favoriteStatus == "Favorite") {
+
+                    $("#btnfavorite").removeClass("notFavorite");
+                    $("#btnfavorite").addClass("favorite");
+
+                    $("#favText").removeClass("glyphicon-star-empty");
+                    $("#favText").addClass("glyphicon-star");
+
+                }
+                else {
+                    $("#btnfavorite").removeClass("favorite");
+                    $("#btnfavorite").addClass("notFavorite");
+
+                    $("#favText").removeClass("glyphicon-star");
+                    $("#favText").addClass("glyphicon-star-empty");
+                }
+            }
+
+
+
+
+
+        });
+
+    </script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+    <script src="~/Scripts/custom/reportComment.js"></script>
+    <script src="~/Scripts/custom/AddComment.js"></script>
+    <script src="~/Scripts/custom/ratingScript.js"></script>
+    <script src="~/Scripts/custom/removeComment.js"></script>
+    <script src="~/Scripts/custom/favoritesManager.js"></script>
+}

@@ -1,0 +1,28 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Trirong:300,400,400i,500,600,700');
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css');
+
+/*resCarousel Css*/
+.outtT {
+    display: none;
+}
+
+
+
+.resCarouselT {
+    float: left;
+    overflow: hidden;
+    padding: 0 15px;
+    width: 100%;
+}
+.resCarousel-innerT {
+    transition: 1s ease all;
+    float: left;
+}
+.resCarousel-innerT .itemT {
+    float: left;
+}
+
+/*resCarousel Css End*/
+
+
+

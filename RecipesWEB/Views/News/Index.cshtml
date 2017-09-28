@@ -1,0 +1,56 @@
+﻿@model PagedList.IPagedList<RecipesWEB.Models.News>
+@using PagedList.Mvc;
+
+
+
+<div class="row">
+    @if (ViewBag.showControlls == "yes")
+    {
+        <hr />
+        <div class="col-md-12">
+            <a class="btn btn-success btn-block" href="/News/Create">Нова вест</a>
+        </div>
+    }
+
+</div>
+<hr />
+<div class="row">
+
+    <div class="flex-row row">
+        @foreach (var item in Model)
+            {
+            <div class="col-md-4" style="margin-bottom:10px;margin-top:5px; padding-left:10px;padding-right:10px;cursor: pointer" onclick="myhref('/News/Details?id=@item.Id')">
+                <div class="card cardtest hoverable">
+                    <img src="~/Content/images/newsImages/@item.imagePath" alt="слика на рецептот" class="img-responsive" />
+                    <div class="overTextSecond">
+                        <div style="padding-bottom:0">
+                            <div class="spanClass">
+                                <div class="spacer text-center">@item.newsTitle</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+    <hr />
+    <div class="row text-center">
+        
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+    </div>
+
+</div>
+
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+        function myhref(web) {
+            window.location.href = web;
+        }
+    </script>
+}
+

@@ -1,0 +1,42 @@
+﻿@model RecipesWEB.Models.viewModels.postStatus
+
+
+
+
+
+@if (Model.unApprovedPosts.Count() != 0)
+{
+    <div class="container">
+        <h3><strong>Рецепти за одобрување</strong></h3>
+        <hr />
+        @foreach (var item in Model.unApprovedPosts)
+        {
+
+            <div class="row card adminBackgroundColor" style="padding:10px;margin-bottom:5px;">
+                <div class="col-md-2">
+                    <a class="btn btnDefaultColor btn-sm btn-block" href="/Posts/Details?id=@item.Id">Детали</a>
+                </div>
+                <div class="col-md-1">
+                    <h5><span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span><strong>@item.postRating</strong></h5>
+                </div>
+                <div class="col-md-2">
+                    <h5><strong>@item.postCategory</strong> </h5>
+                </div>
+                <div class="col-md-2">
+                    <h5><span class="glyphicon glyphicon glyphicon-pencil" style="margin-right:5px"></span><strong>@item.approveState</strong></h5>
+                </div>
+                <div class="col-md-5">
+                    <h5><span class="glyphicon glyphicon-file" style="margin-right:5px"></span><strong>@item.postTitle</strong></h5>
+                </div>
+            </div>
+
+        }
+    </div>
+}
+else
+{
+    <div class="row text-center" style="margin-top:30px;margin-bottom:300px">
+        <h4><strong>Моментално немате рецепти кој треба да бидат одобрени.</strong></h4>
+    </div>
+}
+

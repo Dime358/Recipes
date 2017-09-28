@@ -1,0 +1,48 @@
+﻿@model RecipesWEB.Models.Posts
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<style>
+    hr{
+        padding:5px;
+        padding-left:0;
+        margin-left:0;
+        margin:5px;
+    }
+
+    .mainRowStyle {
+        margin-top:30px;
+        margin-bottom:150px;
+        padding:50px;
+        padding-top:30px
+    }
+
+</style>
+
+
+<div class="row detailsBackgroundColor mainRowStyle" >
+    <div class="col-lg-offset-2 col-md-8">
+        <h3 class="text-center">Дали сте сигурни дека сакате да го избришете овој рецепт?</h3>
+    </div>
+    <div class="col-md-offset-2 col-md-3">
+        <img src="~/Content/images/postImages/@Model.imagePath" class="img-responsive img-thumbnail" />
+    </div>
+    <div class="col-md-6">
+        <hr />
+        Наслов : <strong>@Model.postTitle</strong><br /><hr />
+        Категорија : <strong>@Model.postCategory</strong><br /><hr />
+        Рејтинг : <strong>@Model.postRating</strong><br /><hr />
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <button type="submit" value="Delete" class="btn btnRemoveColor btn-sm">избриши</button>
+            </div>
+        }
+    </div>
+</div>
+
+

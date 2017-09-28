@@ -1,0 +1,67 @@
+﻿@model RecipesWEB.Models.viewModels.IndexViewModel
+
+
+
+zz
+
+
+<div class="container homeBackgroundColor" style="margin-top:30px">
+    <div class="row" style="padding-left:20px">
+        <h3><span class="glyphicon glyphicon-wrench" style="margin-right:5px"></span><strong>Поднесувања</strong></h3>
+        <h5><strong>Овде можете да правите промени на вашиот профил</strong></h5>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-3">
+            <ul class="nav nav-pills nav-stacked" style="margin-bottom: 15px;">
+                <li><a href="#image" data-toggle="tab">Промена на слика</a></li>
+                <li>@Html.ActionLink("Промена на лозинка", "ChangePassword")</li>
+                <li>@Html.ActionLink("Управување со надворешни логирања", "ManageLogins")</li>
+            </ul>
+        </div>
+
+        <div class="col-md-9">
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="desc">
+                    <p><strong>Изберете категорија за промена</strong></p>
+                </div>
+                <div class="tab-pane fade" id="image">
+                    <h4>Промена на профилна слика</h4>
+                    <form class="form-inline" method="post" action="/Home/addUserImage" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <label for="ImageUser" class="col-md-3 control-label">Изберете нова слика</label>
+                            <div class="col-md-5">
+                                <input type="file" id="ImageUser" name="ImageUser">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="submit" value="Прикачи слика" class="btn btn-success btn-sm " />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="profile">
+                    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
+                </div>
+                <div class="tab-pane fade" id="dropdown1">
+                    <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,58 @@
+﻿@model RecipesWEB.Models.News
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+
+
+
+<br />
+<div class="row detailsBackgroundColor" style="padding:30px">
+    <a class="btn btn-sm btn-primary" href="/News/Index">Назад кон сите вести</a>
+    <div class="row">
+        <div class="col-md-offset-4 col-md-7 text-center">
+            <h3><strong>@Model.newsTitle</strong></h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            
+            <div class="row">
+                <img src="~/Content/images/newsImages/@Model.imagePath" class="img-responsive img-thumbnail" />
+            </div>
+            <div class="row">
+                @if (ViewBag.showControlls == "yes")
+            {
+                    <div class="col-md-offset-2">
+                        <a class="btn btn-sm btnDefaultColor" href="/News/Edit?id=@Model.Id">Едитирај</a>
+                        <a class="btn btn-sm btnRemoveColor" href="/News/Delete/@Model.Id">Избриши</a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-8" style="padding:10px">
+            
+
+                <div class="col-md-12" style="padding:10px">
+                    <span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span><b>@Model.UserName</b>
+                </div>
+            
+            
+                <div class="col-md-12" style="padding:10px">
+                    <span class="glyphicon glyphicon glyphicon-calendar" style="margin-right:5px"></span>@Model.CreatedDate.ToShortDateString()
+                </div>
+            
+                <div class="col-md-12 detailsBackgroundColor" style="padding:10px">
+                    <p style="white-space: pre-wrap">@Model.newsBody</p>
+                </div>
+           
+
+        </div>
+    </div>
+
+</div>
+
+

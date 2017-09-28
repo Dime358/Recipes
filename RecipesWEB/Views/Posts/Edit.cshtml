@@ -1,0 +1,136 @@
+﻿@model RecipesWEB.Models.Posts
+@using Microsoft.AspNet.Identity
+
+
+
+<link href="~/Content/plug-ins/tags/bootstrap-tagsinput.css" rel="stylesheet" />
+
+
+<div class="row">
+    <div class="col-md-offset-2 col-md-8">
+        <hr />
+        <div class="card">
+            <form method="post" id="editPost" class="form-horizontal" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <fieldset class="createBackgroundColor">
+                    <h3 class="text-center">Промени рецепт</h3>
+                    <div class="form-group">
+                        <label for="postTitle" class="col-md-2 control-label">Наслов</label>
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.postTitle, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.postTitle, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="postBody" class="col-md-2 control-label">Опис</label>
+                        <div class="col-md-9">
+                            @Html.TextAreaFor(m => m.postBody, new { rows = 15, @class = "form-control", @style = "resize: none;white-space: pre-wrap;" })
+                            @Html.ValidationMessageFor(model => model.postBody, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="postCategory" class="col-md-2 control-label">Категорија</label>
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(x => x.postCategory, new SelectListItem[]{
+                                new SelectListItem() {Text = "Појадок", Value="Појадок"},
+                                new SelectListItem() {Text = "Ручек", Value="Ручек"},
+                                new SelectListItem() {Text = "Вечера", Value="Вечера"},
+                                new SelectListItem() {Text = "Десерт", Value="Десерт"}}, new { @class = "form-control", @style = " height: 40px;" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="difficulty" class="col-md-2 control-label">Тежина на изработка</label>
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(x => x.difficulty, new SelectListItem[]{
+                                new SelectListItem() {Text = "Многу лесно", Value="Многу лесно"},
+                                new SelectListItem() {Text = "Лесно", Value="Лесно"},
+                                new SelectListItem() {Text = "Средно", Value="Средно"},
+                                new SelectListItem() {Text = "Тешко", Value="Тешко"},
+                                new SelectListItem() {Text = "Многу тешко", Value="Многу тешко"}}, new { @class = "form-control", @style = " height: 40px;" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="numPortions" class="col-md-2 control-label">Број на порции</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(m => m.numPortions, new { type = "number", step = "1", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.numPortions, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="prepTime" class="col-md-2 control-label">Време на подготовка</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(m => m.prepTime, new { type = "number", step = "1", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.prepTime, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="postTags" class="col-md-2 control-label">Тагови</label>
+                        <div class="col-md-9">
+                            <input type="text" name="postTags" value="@Model.postTags" data-role="tagsinput" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ingredients" class="col-md-2 control-label">Состојки</label>
+                        <div class="col-md-9">
+                            <input type="text" name="ingredients" value="@Model.ingredients" data-role="tagsinput" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ImagePost" class="col-md-2 control-label">Стара слика</label>
+                        <div class="col-md-3">
+                            <img src="~/Content/images/postImages/@Model.imagePath" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ImagePost" class="col-md-2 control-label">Нова слика</label>
+                        <div class="col-md-9">
+                            <input type="file" name="ImagePost" id="file" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="Id" value="@Model.Id" />
+                    </div>
+                    <div class="form-group">
+                        <div class="text-center">
+
+                            <input type="submit" id="btnCreatePost" value="промени" class="btn btn-success" />
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalBody">Modal Header</h3>
+                </div>
+                <div class="modal-body" id="modalButtons">
+                    <div class="btn-group btn-group-justified">
+                        <a class="btn btn-sm btn-primary" href="/Posts/Details?id=@Model.Id">Назад кон рецептот</a>
+                        <a class="btn btn-sm btn-primary" href="/Posts/Index">Листа на рецепти</a>
+                        <a class="btn btn-sm btn-primary" href="/Home/postStatus?id=@User.Identity.GetUserId()">Статус на постови</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Content/plug-ins/tags/bootstrap-tagsinput.js"></script>
+<script src="~/Scripts/custom/editPost.js"></script>

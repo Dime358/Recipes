@@ -1,0 +1,209 @@
+﻿@model RecipesWEB.Models.Posts
+@using Microsoft.AspNet.Identity
+@{
+    var date = DateTime.UtcNow;
+}
+
+
+<link href="~/Content/plug-ins/tags/bootstrap-tagsinput.css" rel="stylesheet" />
+
+
+<style>
+    .notificationLink:hover {
+        color: black;
+    }
+</style>
+
+
+<div class="row" style="margin-top:70px;">
+    <div class="col-md-7">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <fieldset class="createBackgroundColor">
+                        <form method="post" id="createPost" class="form-horizontal" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+
+                            <h3 class="text-center">Нов рецепт</h3>
+                            <div class="form-group">
+                                <label for="postTitle" class="col-md-2 control-label">Наслов</label>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.postTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.postTitle, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="postBody" class="col-md-2 control-label">Опис</label>
+                                <div class="col-md-9">
+                                    @Html.TextAreaFor(m => m.postBody, new { rows = 15, @class = "form-control", @style = "resize: none;white-space: pre-wrap;" })
+                                    @Html.ValidationMessageFor(model => model.postBody, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="postCategory" class="col-md-2 control-label">Категорија</label>
+                                <div class="col-md-9">
+                                    <select name="postCategory" id="postCategory" class="form-control" style="padding:0px">
+                                        <option value="Појадок">Појадок</option>
+                                        <option value="Ручек">Ручек</option>
+                                        <option value="Вечера">Вечера</option>
+                                        <option value="Десерт">Десерт</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="difficulty" class="col-md-2 control-label">Тежина на изработка</label>
+                                <div class="col-md-9">
+                                    <select name="difficulty" id="difficulty" class="form-control" style="padding:0px">
+                                        <option value="Многу лесно">Многу лесно</option>
+                                        <option value="Лесно">Лесно</option>
+                                        <option value="Средно">Средно</option>
+                                        <option value="Тешко">Тешко</option>
+                                        <option value="Многу тешко">Многу тешко</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="numPortions" class="col-md-2 control-label">Број на порции</label>
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(m => m.numPortions, new { type = "number", step = "1", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.numPortions, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="prepTime" class="col-md-2 control-label">Време на подготовка</label>
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(m => m.prepTime, new { type = "number", step = "1", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.prepTime, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="postTags" class="col-md-2 control-label">Тагови</label>
+                                <div class="col-md-9">
+                                    <input type="text" name="postTags" data-role="tagsinput" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ingredients" class="col-md-2 control-label">Состојки</label>
+                                <div class="col-md-9">
+                                    <input type="text" name="ingredients" data-role="tagsinput" style="display: none;">
+                                    <span class="help-block">Задолжително внесете ги потребните состојки за рецептот.</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ImagePost" class="col-md-2 control-label">Слика</label>
+                                <div class="col-md-9">
+                                    <input type="file" name="ImagePost" id="file" />
+                                </div>
+                            </div>
+                        </form>
+                        <div class="text-center">
+                            <button id="btnCreatePost" class="btn btn-success">Креирај рецепт</button>
+                        </div>
+                        <hr />
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card">
+            <fieldset class="createBackgroundColor">
+                <h3 class="text-center">Правила:</h3>
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"  style="background:rgba(48, 109, 19, 0.80)">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" class="notificationLink">Правила за креирање рецепт</a>
+                            </h4>
+                        </div>
+                        <div id="collapse1" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                За вашиот рецепт да биде одобрен по креирањето ве молиме следете ги следните правила.<br />
+                                - Користете фонт со македонска поддршка.<br />
+                                - Насловот не треба да биде предолг и треба јасно да го означува рецептот.<br />
+                                - Препорачливо е описот да го поделите на делови врз база на  начинот на подготовка на рецептот.<br />
+                                - Избегнувајте грешки во текстот.<br />
+                                - Пополнете ги сите задолжителни полиња.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="background:rgba(48, 109, 19, 0.80)">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="notificationLink">Задолжителни полиња</a>
+                            </h4>
+                        </div>
+                        <div id="collapse2" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                - Сите наведени полиња се задолжителни освен полињата <b>Тагови</b> и <b>Слика</b>.<br />
+                                - За да го креирате рецептот мора сите полиња да бидат пополнети.<br />
+                                - Доколку имате грешка во внесот во некое од полињата за истата ќе бидете известени со порака.<br />
+                                - Препорачливо е доколку сте во можност да прикачите слика за рецептот кој го креирата.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="background:rgba(48, 109, 19, 0.80)">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="notificationLink">Тагови и состојки</a>
+                            </h4>
+                        </div>
+                        <div id="collapse3" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <p>
+                                    Таговите и состојките на рецептот може да ги внесете преку кликање на соодветното поле,<br />
+                                    впишување на вашиот текст и потоа да го зачувате текстот со <br />
+                                    кликање настрана или преку притискање на копчето Enter.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </fieldset>
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    
+    <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalBody">Modal Header</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="btn-group btn-group-justified">
+                        <a class="btn btn-sm btn-primary" href="/Posts/Index">Листа на рецепти</a>
+                        <a class="btn btn-sm btn-primary" href="/Home/postStatus?id=@User.Identity.GetUserId()">Статус на постови</a>
+                        <a class="btn btn-sm btn-primary" href="/Posts/Create">Нов рецепт</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    var tagsArray = [];
+</script>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Content/plug-ins/tags/bootstrap-tagsinput.js"></script>
+
+<script src="~/Scripts/custom/createPostScript.js"></script>

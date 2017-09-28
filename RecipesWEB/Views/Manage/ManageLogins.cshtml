@@ -1,0 +1,88 @@
+﻿@model RecipesWEB.Models.viewModels.ManageLoginsViewModel
+@using Microsoft.Owin.Security
+
+
+<br />
+
+<a class="btn btn-primary btn-sm" href="/Manage/Index"><span class="glyphicon glyphicon-arrow-left"></span> Назад кон поднесувања</a>
+<div class="row homeBackgroundColor">
+    <p class="text-success">@ViewBag.StatusMessage</p>
+
+    @{
+        var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+        if (loginProviders.Count() == 0)
+        {
+            <div>
+                <p>
+                    There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=313242">this article</a>
+                    for details on setting up this ASP.NET application to support logging in via external services.
+                </p>
+            </div>
+        }
+        else
+        {
+            if (Model.CurrentLogins.Count > 0)
+            {
+                <h4 class="text-center text-info">Регистрирани надворешни сервиси:</h4>
+                <div class="col-md-offset-4 col-md-4">
+                    <table class="table">
+                        <tbody>
+                            @foreach (var account in Model.CurrentLogins)
+                    {
+                                <tr>
+                                    <td><h4>@account.LoginProvider</h4></td>
+                                    <td>
+                                        @if (ViewBag.ShowRemoveButton)
+                                        {
+                                            using (Html.BeginForm("RemoveLogin", "Manage"))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <div>
+                                                    @Html.Hidden("loginProvider", account.LoginProvider)
+                                                    @Html.Hidden("providerKey", account.ProviderKey)
+                                                    <button type="submit" class="btn btn-danger btn-sm" title="Отстранете го @account.LoginProvider од фашиот профил.">отстрани</button>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @: &nbsp;
+                                }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            }
+            if (Model.OtherLogins.Count > 0)
+            {
+
+                <div class="col-md-offset-4 col-md-4">
+                    @using (Html.BeginForm("LinkLogin", "Manage"))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div id="socialLoginList">
+                            <p>
+                                @foreach (AuthenticationDescription p in Model.OtherLogins)
+                                {
+                                    <button type="submit" class="btn btn-info btn-sm " id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
+                                }
+                            </p>
+                        </div>
+                    }
+
+                </div>
+
+            }
+        }
+    }
+
+
+
+</div>
+
+
+<hr />
+

@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Потврда на email адреса";
+}
+
+<h2>@ViewBag.Title.</h2>
+<div>
+    <p>
+        Ви благодариме што ја потврдивте вашата email адреса.Ве молиме користете го следниот линк за најава. @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+    </p>
+</div>

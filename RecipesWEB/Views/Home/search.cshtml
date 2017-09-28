@@ -1,0 +1,130 @@
+﻿@model RecipesWEB.Models.viewModels.searchViewModel
+@using PagedList.Mvc;
+
+
+<style>
+    .marginBot {
+        margin-bottom: 300px;
+    }
+</style>
+
+@if (ViewBag.error == "error")
+{
+    <div class="row text-center" style="margin-top:30px;margin-bottom:300px">
+        <h4><strong>Вашата фраза за прабарување е прекратка.Ве молиме внесете подолга фраза и обидете се повторно.</strong></h4>
+    </div>
+}
+else
+{
+    if (Model.posts.Count() == 0 && Model.news.Count() == 0)
+    {
+        <div class="row text-center" style="margin-top:30px;margin-bottom:300px">
+            <h4><strong>Пребарувањето не даде резултати.</strong></h4>
+        </div>
+    }
+
+}
+
+@if (ViewBag.error != "error")
+{
+
+
+    if (@Model.posts.Count() != 0)
+    {
+        ViewBag.postM = "yes";
+        <div class="row" id="postContainer">
+            <h3><strong>Пронајдени рецепти</strong></h3>
+            <hr />
+            @foreach (var item in Model.posts)
+            {
+
+                <div class="row card adminBackgroundColor" style="padding:10px;margin-bottom:5px;">
+                    <div class="col-md-2">
+                        <a class="btn btnDefaultColor btn-sm btn-block" href="/Posts/Details?id=@item.Id">Детали</a>
+                    </div>
+                    <div class="col-md-1">
+                        <h5><span class="glyphicon glyphicon glyphicon-stats" style="margin-right:5px"></span><strong>@item.postRating</strong></h5>
+                    </div>
+                    <div class="col-md-2">
+                        <h5><strong>@item.postCategory</strong> </h5>
+                    </div>
+                    <div class="col-md-2">
+                        <h5><span class="glyphicon glyphicon glyphicon-user" style="margin-right:5px"></span><strong>@item.UserName</strong></h5>
+                    </div>
+                    <div class="col-md-5">
+                        <h5><strong>@item.postTitle</strong></h5>
+                    </div>
+                </div>
+
+            }
+            @if (ViewBag.showPostPage == "yes")
+            {
+                <div class="row text-center">
+                    @Html.PagedListPager(Model.posts, page => Url.Action("Search", new { searchString = ViewBag.searchString, postNumber = page, newsNumber = ViewBag.newsNumberPage }))
+                </div>
+            }
+        </div>
+    }
+
+    if (@Model.news.Count() != 0)
+    {
+        ViewBag.newsM = "yes";
+
+        <div class="row" id="newsContainer">
+            <h3><strong>Пронајдени совети</strong></h3>
+            <hr />
+            @foreach (var item in Model.news)
+            {
+
+                <div class="row card adminBackgroundColor" style="padding:10px;margin-bottom:5px;">
+                    <div class="col-md-2">
+                        <a class="btn btnDefaultColor btn-sm btn-block" href="/News/Details?id=@item.Id">Детали</a>
+                    </div>
+                    <div class="col-md-10">
+                        <h5><strong>@item.newsTitle</strong></h5>
+                    </div>
+                </div>
+
+            }
+            @if (ViewBag.showNewsPage == "yes")
+            {
+                <div class="row text-center">
+                    @Html.PagedListPager(Model.news, page => Url.Action("Search", new { searchString = ViewBag.searchString, postNumber = ViewBag.postNumberPage, newsNumber = page }))
+                </div>
+            }
+
+
+        </div>
+    }
+
+}
+
+
+@section Scripts{
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            debugger;
+            var showPost = '@(ViewBag.showPostPage)';
+            var showNews = '@(ViewBag.showNewsPage)';
+            var postMar = '@(ViewBag.postM)';
+            var newsMar = '@(ViewBag.newsM)';
+
+            if (showPost != "yes" && showNews == "yes") {
+                $("#newsContainer").addClass("marginBot");
+            }
+            if (showPost == "yes" && showNews != "yes") {
+                $("#postContainer").addClass("marginBot");
+            }
+            if (postMar != "yes" && newsMar == "yes") {
+                $("#newsContainer").addClass("marginBot");
+            }
+            if (postMar == "yes" && newsMar != "yes") {
+                $("#postContainer").addClass("marginBot");
+            }
+        });
+    </script>
+
+}

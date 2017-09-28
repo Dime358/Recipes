@@ -1,0 +1,44 @@
+﻿@model RecipesWEB.Models.ExternalLoginConfirmationViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<br />
+<div class="row homeBackgroundColor">
+
+    <h3 class="text-center">Поврзување со вашиот @ViewBag.LoginProvider профил.</h3>
+
+    @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <h4 class="text-center text-info">
+            Успешно го автентициравте вашиот <strong>@ViewBag.LoginProvider</strong> профил.<br />
+            Ве молиме внесете корисничко име во полето доле и кликнете на копчето Регистрација за да го финализирате процесот.
+        </h4>
+        <div class="form-group">
+            <label for="UserName" class="col-md-2 control-label">Корисничко име</label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+
+            </div>
+            <input type="hidden" name="Email" value="@Model.Email" />
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-success btn-sm" value="Регистрација" />
+            </div>
+        </div>
+    }
+
+
+
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

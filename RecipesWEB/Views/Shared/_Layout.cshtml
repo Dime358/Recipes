@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+    <!-- Slick Slider -->
+    <link href="~/Content/plug-ins/slick/slick.css" rel="stylesheet" />
+    <link href="~/Content/plug-ins/slick/slick-theme.css" rel="stylesheet" />
+    <link href="~/Content/customCss/SlickSlider.css" rel="stylesheet" />
+
+
+    <!-- Material Design Bootstrap -->
+    <link href="~/Content/plug-ins/MDB bootstrap/css/mdb.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link href="~/Content/customCss/flexRow.css" rel="stylesheet" />
+    <link href="~/Content/customCss/overText.css" rel="stylesheet" />
+
+    <!-- Carousel two -->
+    <link href="~/Content/plug-ins/carousel2/carouselStyleR.css" rel="stylesheet" />
+    <link href="~/Content/plug-ins/carousel2/carouselStyleT.css" rel="stylesheet" />
+    <!-- colors -->
+    <link href="~/Content/customCss/customColors.css" rel="stylesheet" />
+
+    <!-- links -->
+    <link href="~/Content/customCss/linksColor.css" rel="stylesheet" />
+
+    <style>
+        body {
+            padding-top: 20px;
+            padding-bottom: 0;
+            background-image: url('../Content/images/background-knife.jpeg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% auto;
+        }
+
+        .navCollapse {
+            text-align: center; /* Set this */
+            height: auto !important;
+            padding-bottom: 0;
+            overflow: visible !important;
+            font-weight: bold;
+        }
+
+        .navNav {
+            display: inline-block;
+            float: none;
+            margin: 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            min-height: 100%;
+            position: relative;
+            padding-bottom: 250px;
+        }
+
+        .footer {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 250px;
+        }
+
+        .pagination a {
+            color: black;
+           
+        }
+    </style>
+
+
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:#02260b">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+            <div class="navbar-collapse collapse ">
+                <ul class="nav navbar-nav " style="font-size:1.5em;margin-top:5px">
+                    <li>@Html.ActionLink("ПОЧЕТНА", "Index", "Home")</li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">РЕЦЕПТИ <b class="caret"></b></a>
+                        <ul class="dropdown-menu dropdown-content" style="background:#dbf3d8">
+                            <li>
+                                <a href="/Posts/Index?cat=сите">Сите рецепти</a>
+                            </li>
+                            <li>
+                                <a href="/Posts/Index?cat=Појадок">Појадок</a>
+                            </li>
+                            <li>
+                                <a href="/Posts/Index?cat=Ручек">Ручек</a>
+                            </li>
+                            <li>
+                                <a href="/Posts/Index?cat=Вечера">Вечера</a>
+                            </li>
+                            <li>
+                                <a href="/Posts/Index?cat=Десерт">Десерт</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("СОВЕТИ", "Index", "News")</li>
+                </ul>
+                @Html.Action("NavigationRight", "Partial")
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content" style="margin-top:40px">
+        @RenderBody()
+        <hr />
+
+    </div>
+    <footer style="background-color:#02260b;padding:20px;margin:0" class="footer">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-2">
+
+                <ul style="font-size:1.3em;">
+                    <li><a href="/News/Index"><h4>Новости</h4></a></li>
+                    <li><a href="/Posts/Index?cat=сите">Сите рецепти</a></li>
+                    <li><a href="/Posts/Index?cat=Појадок">Појадок</a></li>
+                    <li><a href="/Posts/Index?cat=Ручек">Ручек</a></li>
+                    <li><a href="/Posts/Index?cat=Вечера">Вечера</a></li>
+                    <li><a href="/Posts/Index?cat=Десерт">Десерт</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+                <ul style="font-size:1.3em;">
+                    <li><a href="/Home/Contact">Контакт</a></li>
+                    <li><a href="/Home/About">За нас</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+                <ul style="font-size:1.3em;">
+                    <li>@Html.ActionLink("Регистрација", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                    <li>@Html.ActionLink("Најава", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+
+                <ul style="font-size:1.3em;">
+                    <li><button class="btn btn-block btn-primary">Facebook</button></li>
+                    <li><button class="btn btn-block btn-danger">Google+</button></li>
+                    <li><button class="btn btn-block btn-info">Twitter</button></li>
+                </ul>
+            </div>
+        </div>
+        <h5 class="text-center">&copy;2017 Креирано од Димитар Јорданов </h5>
+
+    </footer>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+
+
+    <!-- Bootstrap tooltips -->
+    <script src="~/Content/plug-ins/MDB bootstrap/js/tether.min.js"></script>
+
+    <!-- MDB core JavaScript -->
+    <script src="~/Content/plug-ins/MDB bootstrap/js/mdb.min.js"></script>
+    <script src="~/Content/plug-ins/slick/slick.min.js"></script>
+    <script src="~/Content/plug-ins/carousel2/resCarouselR.js"></script>
+    <script src="~/Content/plug-ins/carousel2/resCarouselT.js"></script>
+</body>
+</html>
